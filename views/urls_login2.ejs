@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+  <title>Document</title>
+</head>
+<body>
+  <%- include('partials/_header') %>
+<h2>Login</h2>
+
+<form action="/login" method="POST">
+  <label for="username">Username:</label><br/>
+  <input name="username" id="username" type="text" /><br/>
+
+  <label for="password">Password:</label><br/>
+  <input name="password" id="password" type="password" /><br/>
+  <div></div>
+  &nbsp
+  <button type="submit" class="btn btn-primary" style="margin-right:1em">Login</button>
+</form>
+
+
+</body>
+</html>
