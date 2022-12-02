@@ -19,10 +19,10 @@
       </div>
     </div>
         <% if (userinfo) { %>
-          <form class="form-inline" method="GET" action="/logout">
+          <form class="form-inline" method="get" action="/logout">
             <div>
-              <label for="user" style="margin-right:1em">Logged in as: <%= userinfo.email   %> &nbsp
-                <button name="user" type="submit" class="btn btn-primary">Log out</button>
+              <label for="user" style="margin-right:1em">Logged in as: <%= userinfo.email%> &nbsp
+                <button name="user" type="submit" class="btn btn-primary">Logout</button>
               </label>
             </div>
           </form>
