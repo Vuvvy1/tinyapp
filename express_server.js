@@ -76,9 +76,6 @@ app.get("/urls", (req, res) => {
   if (!req.session.user) {
     res.redirect('/login');
   }
-  console.log("urlDatabase ➤", urlDatabase);
-  console.log("req.session.user ➤", req.session.user.id);
-  // console.log("userDatabase ➤", userDatabase);
   const templateVars = {
     urls: urlsForUser(req.session.user.id , urlDatabase),
     usercook : req.session.user,
@@ -109,7 +106,6 @@ app.get("/urls/:id", (req, res) => {
   if (!urlDatabase[req.params.id]) {
     res.status(403).send('id does not exist');
   }
-  console.log("req.params.id ➤", req.params.id);
   const templateVars = {
     id: req.params.id,
     longURL: urlDatabase[req.params.id].longURL,
@@ -122,24 +118,16 @@ app.post('/urls', (req, res) => {
     res.status(403).send('Cannot shorten without login');
   } else {
     const shortUrl = generateRandomString(6);
-    // console.log("{req.body} ➤", req.body);
-    // console.log("req.body.longURL ➤", req.body.longURL);
-    // console.log("urlDatabase ➤", urlDatabase);
-    // console.log("shortUrl ➤", shortUrl);
-    // console.log("urlDatabase[shortUrl] ➤", userurls);
     urlDatabase[shortUrl] =  {
       longURL: req.body.longURL,
       userID: req.session.user.id
     };
     res.redirect(`/urls/${shortUrl}`);
-  //console.log("urlDatabase ➤", urlDatabase);
   }
 });
 
 app.get("/u/:id", (req, res) => {
-
   const urlObj = urlDatabase[req.params.id];
-  console.log("urlObj ➤", urlObj);
   const longUrl = urlObj.longURL;
   if (longUrl) {
     res.redirect(longUrl);
@@ -149,10 +137,6 @@ app.get("/u/:id", (req, res) => {
 });
 
 app.get('/urls/delete/:id', (req, res) => {
-  console.log("trying to delete");
-  console.log("req.params.id ➤", req.params.id);
-  console.log("req.session.user ➤", req.session.user);
-
   if (!req.session.user) {
     res.status(403).send('Cannot delete without login');
   }
@@ -162,14 +146,12 @@ app.get('/urls/delete/:id', (req, res) => {
   if (!urlDatabase[req.params.id]) {
     res.status(403).send('id does not exist');
   }
-  console.log("req.params.id ➤", req.params.id);
   const shortUrl = req.params.id;
   delete urlDatabase[shortUrl];
   res.redirect("/urls");
 });
 
 app.post('/urls/:id', (req, res) => {
-  console.log("app.post('/urls/:id'");
   const templateVars = {
     usercook : req.session.user,
     userinfo : req.session.user,
@@ -177,7 +159,6 @@ app.post('/urls/:id', (req, res) => {
   };
   const shortUrl = req.params.id;
   const longURL = req.body.longURL;
-  console.log("longURL ➤", longURL);
   urlDatabase[shortUrl].longURL = longURL;
   res.redirect("/urls");
 });
@@ -188,22 +169,16 @@ app.post('/login', (req, res) => {
   }
   const username = getUserByEmail(req.body.email, userDatabase);
   if (!username || !bcrypt.compareSync(req.body.password, username.password)) {
-    console.log("login unsuccessful (pass):( ➤");
     res.status(403).send('Password not matching');
   } else {
     req.session.user = username;
     res.redirect("/urls");
     redirecting = true;
-    console.log("login successful (: ➤");
     return;
   }
-  console.log("checking if email matched");
-  console.log(redirecting);
   if (!redirecting) {
-    console.log("login unsuccessful (email):( ➤");
     res.status(403).send('no matching email');
   } else {
-    console.log("hmmm, shouldnt be printed out");
   }
 });
 app.get("/register", (req, res) => {
@@ -213,10 +188,6 @@ app.get("/register", (req, res) => {
     userinfo : req.session.user
   };
   res.render("urls_register", templateVars);
-  // console.log(urlDatabase);
-  // const templateVars = { urls: urlDatabase };
-  // res.render("urls_index", templateVars);
-
 });
 
 app.post('/register', (req, res) => {
@@ -245,7 +216,6 @@ app.post('/register', (req, res) => {
   //req.session[userIdCookie] = user.id;
   //res.cookie("user", user.id);
   req.session.user = user.id;
-  console.log("user ➤", user);
   res.redirect("/urls");
 });
 
@@ -272,7 +242,6 @@ app.get("/Profile", (req, res) => {
     email : req.session.user.email,
     password : req.session.user.password,
   };
-  //console.log("userDatabase[req.session.user] ➤", userDatabase[req.session.user]);
 
   if (req.session.user) {
     res.render("urls_profile", templateVars);
